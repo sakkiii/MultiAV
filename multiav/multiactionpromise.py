@@ -10,9 +10,11 @@ class MultiActionPromise(Promise):
         self._engine_name_lookup = dict()
         if engine_promises is not None:
             for engine, engine_promise in engine_promises.items():
-                engine_promise.then(self._did_all_engine_promises_run, self._did_all_engine_promises_run)
                 self._engine_promises[engine] = engine_promise
                 self._engine_name_lookup[engine.container_name] = engine_promise
+
+            for engine, engine_promise in engine_promises.items():
+                engine_promise.then(self._did_all_engine_promises_run, self._did_all_engine_promises_run)
 
     def _did_all_engine_promises_run(self, res):
         not_pending = True
